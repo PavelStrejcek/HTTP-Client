@@ -1,6 +1,6 @@
 # HTTP Client
 
-A simple, extensible HTTP client for PHP 8.4 with automatic retry logic and comprehensive error logging.
+A simple, extensible HTTP client for PHP 8.5 with automatic retry logic and comprehensive error logging.
 
 ## Features
 
@@ -13,7 +13,7 @@ A simple, extensible HTTP client for PHP 8.4 with automatic retry logic and comp
 
 ## Requirements
 
-- PHP 8.4+
+- PHP 8.5+
 - cURL extension
 - Docker & Docker Compose (for development)
 
@@ -47,7 +47,7 @@ docker compose exec php composer install
 
 ### Without Docker
 
-If you have PHP 8.4+ installed locally:
+If you have PHP 8.5+ installed locally:
 
 ```bash
 composer install
@@ -541,7 +541,7 @@ try {
 │   └── HttpResponseTest.php
 ├── docker/
 │   └── php/
-│       └── Dockerfile                    # PHP 8.4 container
+│       └── Dockerfile                    # PHP 8.5 container
 ├── docker-compose.yml
 ├── composer.json
 ├── phpunit.xml

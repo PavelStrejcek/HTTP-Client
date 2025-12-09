@@ -1,23 +1,22 @@
 # syntax=docker/dockerfile:1.7
-# PHP 8.4 FPM for web application
-FROM php:8.4-fpm-alpine
+# PHP 8.5 FPM for web application
+FROM php:8.5-fpm-alpine
 
-# Install system dependencies and PHP extensions
+# Install system dependencies
 RUN set -eux; \
     apk add --no-cache \
         bash \
         icu-dev \
-        oniguruma-dev \
         libzip-dev \
         zlib-dev \
         curl \
-        git; \
-    docker-php-ext-install -j"$(nproc)" \
-        pdo_mysql \
-        opcache \
-        intl \
-        mbstring \
-        zip
+        git
+
+# Install PHP extensions one by one (PHP 8.5 compatibility)
+# Note: mbstring and opcache are bundled in PHP 8.5 and enabled by default
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install zip
 
 # Enable recommended opcache settings
 RUN set -eux; \

@@ -36,20 +36,16 @@ final readonly class CurlTransport implements HttpTransportInterface
             throw new HttpTransportException('Failed to initialize cURL');
         }
 
-        try {
-            $this->configureRequest($ch, $request);
+        $this->configureRequest($ch, $request);
 
-            $response = curl_exec($ch);
+        $response = curl_exec($ch);
 
-            if ($response === false) {
-                $this->handleCurlError($ch, $request->url);
-            }
-
-            /** @var string $response */
-            return $this->parseResponse($ch, $response);
-        } finally {
-            curl_close($ch);
+        if ($response === false) {
+            $this->handleCurlError($ch, $request->url);
         }
+
+        /** @var string $response */
+        return $this->parseResponse($ch, $response);
     }
 
     /**
