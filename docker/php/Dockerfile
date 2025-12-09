@@ -12,11 +12,9 @@ RUN set -eux; \
         curl \
         git
 
-# Install PHP extensions one by one (PHP 8.5 compatibility)
+# Install PHP extensions with parallel compilation
 # Note: mbstring and opcache are bundled in PHP 8.5 and enabled by default
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install intl
-RUN docker-php-ext-install zip
+RUN docker-php-ext-install -j"$(nproc)" pdo_mysql intl zip
 
 # Enable recommended opcache settings
 RUN set -eux; \
