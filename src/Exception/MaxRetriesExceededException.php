@@ -27,12 +27,12 @@ final class MaxRetriesExceededException extends HttpClientException
         $message = \sprintf(
             'Maximum retry attempts (%d) exceeded. Last status code: %s',
             $attempts,
-            $lastResponse?->statusCode ?? 'N/A',
+            null !== $lastResponse ? $lastResponse->statusCode : 'N/A',
         );
 
         parent::__construct(
             message: $message,
-            code: $lastResponse?->statusCode ?? 0,
+            code: null !== $lastResponse ? $lastResponse->statusCode : 0,
             previous: $previous,
             response: $lastResponse,
         );

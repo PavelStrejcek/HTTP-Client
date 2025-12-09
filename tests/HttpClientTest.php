@@ -73,8 +73,9 @@ final class HttpClientTest extends TestCase
         self::assertSame('{"status":"updated"}', $response->body);
 
         $request = $this->transport->getRequest(0);
-        self::assertSame('PUT', $request?->method);
-        self::assertSame('application/json', $request?->headers['Content-Type']);
+        self::assertNotNull($request);
+        self::assertSame('PUT', $request->method);
+        self::assertSame('application/json', $request->headers['Content-Type']);
     }
 
     #[Test]
@@ -89,8 +90,9 @@ final class HttpClientTest extends TestCase
         self::assertSame('{"status":"patched"}', $response->body);
 
         $request = $this->transport->getRequest(0);
-        self::assertSame('PATCH', $request?->method);
-        self::assertSame('application/json', $request?->headers['Content-Type']);
+        self::assertNotNull($request);
+        self::assertSame('PATCH', $request->method);
+        self::assertSame('application/json', $request->headers['Content-Type']);
     }
 
     #[Test]
@@ -152,8 +154,9 @@ final class HttpClientTest extends TestCase
         $client->post('https://api.example.com/users', [], ['X-Request-Id' => '123']);
 
         $request = $this->transport->getRequest(0);
-        self::assertSame('secret', $request?->headers['X-Api-Key']);
-        self::assertSame('123', $request?->headers['X-Request-Id']);
+        self::assertNotNull($request);
+        self::assertSame('secret', $request->headers['X-Api-Key']);
+        self::assertSame('123', $request->headers['X-Request-Id']);
     }
 
     #[Test]

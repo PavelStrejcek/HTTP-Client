@@ -440,6 +440,22 @@ docker compose exec php ./vendor/bin/php-cs-fixer fix
 ./vendor/bin/php-cs-fixer fix
 ```
 
+## Static Analysis
+
+The project uses [PHPStan](https://phpstan.org/) at level 6 for static analysis.
+
+### Running PHPStan with Docker
+
+```bash
+docker compose exec php ./vendor/bin/phpstan analyse --memory-limit=512M
+```
+
+### Running PHPStan without Docker
+
+```bash
+./vendor/bin/phpstan analyse
+```
+
 ### Using Mock Transport in Tests
 
 ```php

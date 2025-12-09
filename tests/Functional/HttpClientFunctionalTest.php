@@ -262,7 +262,6 @@ final class HttpClientFunctionalTest extends TestCase
 
         $data = $response->json();
 
-        self::assertIsArray($data);
         self::assertArrayHasKey('json', $data);
         self::assertSame(['a', 'b', 'c'], $data['json']['items']);
         self::assertSame(['key' => 'value'], $data['json']['nested']);
