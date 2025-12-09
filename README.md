@@ -373,7 +373,7 @@ The project includes two test suites:
 | Suite | Tests | Description |
 |-------|-------|-------------|
 | **Unit** | 81 | Fast tests using mocked dependencies |
-| **Functional** | 16 | Integration tests against httpbin.org |
+| **Functional** | 16 | Integration tests against local httpbin service |
 
 ### Running Tests with Docker
 
@@ -381,7 +381,7 @@ The project includes two test suites:
 # Run unit tests only (fast, no network required)
 docker compose exec php ./vendor/bin/phpunit --testsuite Unit
 
-# Run functional tests (requires internet, calls httpbin.org)
+# Run functional tests (uses local httpbin container)
 docker compose exec php ./vendor/bin/phpunit --group functional
 
 # Run all tests
@@ -395,12 +395,21 @@ docker compose exec php ./vendor/bin/phpunit --group functional
 # Run unit tests
 ./vendor/bin/phpunit --testsuite Unit
 
-# Run functional tests
+# Run functional tests (requires local httpbin service)
 ./vendor/bin/phpunit --group functional
 
 # Using composer script
 composer test
 ```
+
+### Local httpbin Service
+
+Functional tests use a local httpbin Docker container instead of the public httpbin.org service. This ensures:
+- Reliable test execution without external dependencies
+- Faster test runs
+- No rate limiting issues
+
+The httpbin service is automatically started with `docker compose up -d` and is available at `http://httpbin` within the Docker network.
 
 ### Test Configuration
 

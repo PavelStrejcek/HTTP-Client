@@ -3,10 +3,17 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
-    container_name: php
+    container_name: httpclient_php
     restart: unless-stopped
     env_file:
       - .env
     volumes:
       - .:/var/www/html:delegated
     working_dir: /var/www/html
+    depends_on:
+      - httpbin
+
+  httpbin:
+    image: kennethreitz/httpbin
+    container_name: httpclient_httpbin
+    restart: unless-stopped

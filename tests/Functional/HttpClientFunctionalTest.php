@@ -16,17 +16,17 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Functional tests using real HTTP calls to httpbin.org
+ * Functional tests using real HTTP calls to httpbin service
  *
- * httpbin.org is a public HTTP testing service that provides
- * various endpoints for testing HTTP clients.
+ * Uses local httpbin Docker container for reliable testing.
+ * Run with: docker compose up -d httpbin
  *
  * @see https://httpbin.org
  */
 #[Group('functional')]
 final class HttpClientFunctionalTest extends TestCase
 {
-    private const string BASE_URL = 'https://httpbin.org';
+    private const string BASE_URL = 'http://httpbin';
 
     private HttpClient $client;
     private SpyLogger $logger;
