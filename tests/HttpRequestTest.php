@@ -123,4 +123,64 @@ final class HttpRequestTest extends TestCase
         // Readonly class ensures immutability
         $this->assertSame('https://api.example.com', $request->url);
     }
+
+    #[Test]
+    public function it_creates_get_request_with_factory_method(): void
+    {
+        $request = HttpRequest::get(
+            'https://api.example.com/users',
+            ['Authorization' => 'Bearer token'],
+        );
+
+        $this->assertSame('https://api.example.com/users', $request->url);
+        $this->assertSame('GET', $request->method);
+        $this->assertSame([], $request->body);
+        $this->assertSame('Bearer token', $request->headers['Authorization']);
+    }
+
+    #[Test]
+    public function it_creates_put_request_with_factory_method(): void
+    {
+        $request = HttpRequest::put(
+            'https://api.example.com/users/1',
+            ['name' => 'Jane'],
+            ['X-Custom' => 'value'],
+        );
+
+        $this->assertSame('https://api.example.com/users/1', $request->url);
+        $this->assertSame('PUT', $request->method);
+        $this->assertSame(['name' => 'Jane'], $request->body);
+        $this->assertSame('application/json', $request->headers['Content-Type']);
+        $this->assertSame('value', $request->headers['X-Custom']);
+    }
+
+    #[Test]
+    public function it_creates_patch_request_with_factory_method(): void
+    {
+        $request = HttpRequest::patch(
+            'https://api.example.com/users/1',
+            ['name' => 'Jane'],
+            ['X-Custom' => 'value'],
+        );
+
+        $this->assertSame('https://api.example.com/users/1', $request->url);
+        $this->assertSame('PATCH', $request->method);
+        $this->assertSame(['name' => 'Jane'], $request->body);
+        $this->assertSame('application/json', $request->headers['Content-Type']);
+        $this->assertSame('value', $request->headers['X-Custom']);
+    }
+
+    #[Test]
+    public function it_creates_delete_request_with_factory_method(): void
+    {
+        $request = HttpRequest::delete(
+            'https://api.example.com/users/1',
+            ['Authorization' => 'Bearer token'],
+        );
+
+        $this->assertSame('https://api.example.com/users/1', $request->url);
+        $this->assertSame('DELETE', $request->method);
+        $this->assertSame([], $request->body);
+        $this->assertSame('Bearer token', $request->headers['Authorization']);
+    }
 }

@@ -48,6 +48,21 @@ final class HttpClientFunctionalTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_get_request_successfully(): void
+    {
+        $response = $this->client->get('/get');
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertSame(200, $response->statusCode);
+
+        $data = $response->json();
+
+        // httpbin returns request info
+        $this->assertArrayHasKey('headers', $data);
+        $this->assertArrayHasKey('url', $data);
+    }
+
+    #[Test]
     public function it_sends_post_request_successfully(): void
     {
         $payload = [
@@ -69,6 +84,57 @@ final class HttpClientFunctionalTest extends TestCase
 
         // Verify Content-Type header was sent
         $this->assertSame('application/json', $data['headers']['Content-Type']);
+    }
+
+    #[Test]
+    public function it_sends_put_request_successfully(): void
+    {
+        $payload = [
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+        ];
+
+        $response = $this->client->put('/put', $payload);
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertSame(200, $response->statusCode);
+
+        $data = $response->json();
+
+        $this->assertEquals($payload, $data['json']);
+        $this->assertSame('application/json', $data['headers']['Content-Type']);
+    }
+
+    #[Test]
+    public function it_sends_patch_request_successfully(): void
+    {
+        $payload = [
+            'name' => 'Updated Name',
+        ];
+
+        $response = $this->client->patch('/patch', $payload);
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertSame(200, $response->statusCode);
+
+        $data = $response->json();
+
+        $this->assertEquals($payload, $data['json']);
+        $this->assertSame('application/json', $data['headers']['Content-Type']);
+    }
+
+    #[Test]
+    public function it_sends_delete_request_successfully(): void
+    {
+        $response = $this->client->delete('/delete');
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertSame(200, $response->statusCode);
+
+        $data = $response->json();
+
+        $this->assertArrayHasKey('headers', $data);
+        $this->assertArrayHasKey('url', $data);
     }
 
     #[Test]

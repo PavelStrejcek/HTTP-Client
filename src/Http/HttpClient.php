@@ -63,6 +63,25 @@ final class HttpClient
     }
 
     /**
+     * Send a GET request to the specified endpoint.
+     *
+     * @param string $endpoint The API endpoint (will be appended to base URL if set)
+     * @param array<string, string> $headers Additional headers for this request
+     * @return HttpResponse The successful response
+     * @throws MaxRetriesExceededException If all retry attempts fail
+     * @throws HttpClientException If a non-retryable error occurs
+     */
+    public function get(string $endpoint, array $headers = []): HttpResponse
+    {
+        $url = $this->buildUrl($endpoint);
+        $mergedHeaders = array_merge($this->defaultHeaders, $headers);
+
+        $request = HttpRequest::get($url, $mergedHeaders);
+
+        return $this->sendWithRetry($request);
+    }
+
+    /**
      * Send a POST request to the specified endpoint.
      *
      * @param string $endpoint The API endpoint (will be appended to base URL if set)
@@ -78,6 +97,65 @@ final class HttpClient
         $mergedHeaders = array_merge($this->defaultHeaders, $headers);
 
         $request = HttpRequest::post($url, $body, $mergedHeaders);
+
+        return $this->sendWithRetry($request);
+    }
+
+    /**
+     * Send a PUT request to the specified endpoint.
+     *
+     * @param string $endpoint The API endpoint (will be appended to base URL if set)
+     * @param array<string, mixed> $body The request body as an associative array
+     * @param array<string, string> $headers Additional headers for this request
+     * @return HttpResponse The successful response
+     * @throws MaxRetriesExceededException If all retry attempts fail
+     * @throws HttpClientException If a non-retryable error occurs
+     */
+    public function put(string $endpoint, array $body = [], array $headers = []): HttpResponse
+    {
+        $url = $this->buildUrl($endpoint);
+        $mergedHeaders = array_merge($this->defaultHeaders, $headers);
+
+        $request = HttpRequest::put($url, $body, $mergedHeaders);
+
+        return $this->sendWithRetry($request);
+    }
+
+    /**
+     * Send a PATCH request to the specified endpoint.
+     *
+     * @param string $endpoint The API endpoint (will be appended to base URL if set)
+     * @param array<string, mixed> $body The request body as an associative array
+     * @param array<string, string> $headers Additional headers for this request
+     * @return HttpResponse The successful response
+     * @throws MaxRetriesExceededException If all retry attempts fail
+     * @throws HttpClientException If a non-retryable error occurs
+     */
+    public function patch(string $endpoint, array $body = [], array $headers = []): HttpResponse
+    {
+        $url = $this->buildUrl($endpoint);
+        $mergedHeaders = array_merge($this->defaultHeaders, $headers);
+
+        $request = HttpRequest::patch($url, $body, $mergedHeaders);
+
+        return $this->sendWithRetry($request);
+    }
+
+    /**
+     * Send a DELETE request to the specified endpoint.
+     *
+     * @param string $endpoint The API endpoint (will be appended to base URL if set)
+     * @param array<string, string> $headers Additional headers for this request
+     * @return HttpResponse The successful response
+     * @throws MaxRetriesExceededException If all retry attempts fail
+     * @throws HttpClientException If a non-retryable error occurs
+     */
+    public function delete(string $endpoint, array $headers = []): HttpResponse
+    {
+        $url = $this->buildUrl($endpoint);
+        $mergedHeaders = array_merge($this->defaultHeaders, $headers);
+
+        $request = HttpRequest::delete($url, $mergedHeaders);
 
         return $this->sendWithRetry($request);
     }

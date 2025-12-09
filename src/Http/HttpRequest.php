@@ -26,6 +26,22 @@ final readonly class HttpRequest
     ) {}
 
     /**
+     * Create a new GET request.
+     *
+     * @param string $url The target URL
+     * @param array<string, string> $headers Additional headers
+     */
+    public static function get(string $url, array $headers = []): self
+    {
+        return new self(
+            url: $url,
+            method: 'GET',
+            body: [],
+            headers: $headers,
+        );
+    }
+
+    /**
      * Create a new POST request.
      *
      * @param string $url The target URL
@@ -39,6 +55,56 @@ final readonly class HttpRequest
             method: 'POST',
             body: $body,
             headers: array_merge(['Content-Type' => 'application/json'], $headers),
+        );
+    }
+
+    /**
+     * Create a new PUT request.
+     *
+     * @param string $url The target URL
+     * @param array<string, mixed> $body The request body
+     * @param array<string, string> $headers Additional headers
+     */
+    public static function put(string $url, array $body = [], array $headers = []): self
+    {
+        return new self(
+            url: $url,
+            method: 'PUT',
+            body: $body,
+            headers: array_merge(['Content-Type' => 'application/json'], $headers),
+        );
+    }
+
+    /**
+     * Create a new PATCH request.
+     *
+     * @param string $url The target URL
+     * @param array<string, mixed> $body The request body
+     * @param array<string, string> $headers Additional headers
+     */
+    public static function patch(string $url, array $body = [], array $headers = []): self
+    {
+        return new self(
+            url: $url,
+            method: 'PATCH',
+            body: $body,
+            headers: array_merge(['Content-Type' => 'application/json'], $headers),
+        );
+    }
+
+    /**
+     * Create a new DELETE request.
+     *
+     * @param string $url The target URL
+     * @param array<string, string> $headers Additional headers
+     */
+    public static function delete(string $url, array $headers = []): self
+    {
+        return new self(
+            url: $url,
+            method: 'DELETE',
+            body: [],
+            headers: $headers,
         );
     }
 

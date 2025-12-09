@@ -30,6 +30,22 @@ final class HttpClientTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_successful_get_request(): void
+    {
+        $this->transport->queueResponse(new HttpResponse(200, '{"users":[]}'));
+
+        $client = $this->createClient();
+        $response = $client->get('https://api.example.com/users');
+
+        $this->assertSame(200, $response->statusCode);
+        $this->assertSame('{"users":[]}', $response->body);
+        $this->assertSame(1, $this->transport->getRequestCount());
+
+        $request = $this->transport->getRequest(0);
+        $this->assertSame('GET', $request?->method);
+    }
+
+    #[Test]
     public function it_sends_successful_post_request(): void
     {
         $this->transport->queueResponse(new HttpResponse(200, '{"status":"ok"}'));
@@ -40,6 +56,52 @@ final class HttpClientTest extends TestCase
         $this->assertSame(200, $response->statusCode);
         $this->assertSame('{"status":"ok"}', $response->body);
         $this->assertSame(1, $this->transport->getRequestCount());
+    }
+
+    #[Test]
+    public function it_sends_successful_put_request(): void
+    {
+        $this->transport->queueResponse(new HttpResponse(200, '{"status":"updated"}'));
+
+        $client = $this->createClient();
+        $response = $client->put('https://api.example.com/users/1', ['name' => 'Jane']);
+
+        $this->assertSame(200, $response->statusCode);
+        $this->assertSame('{"status":"updated"}', $response->body);
+
+        $request = $this->transport->getRequest(0);
+        $this->assertSame('PUT', $request?->method);
+        $this->assertSame('application/json', $request?->headers['Content-Type']);
+    }
+
+    #[Test]
+    public function it_sends_successful_patch_request(): void
+    {
+        $this->transport->queueResponse(new HttpResponse(200, '{"status":"patched"}'));
+
+        $client = $this->createClient();
+        $response = $client->patch('https://api.example.com/users/1', ['name' => 'Jane']);
+
+        $this->assertSame(200, $response->statusCode);
+        $this->assertSame('{"status":"patched"}', $response->body);
+
+        $request = $this->transport->getRequest(0);
+        $this->assertSame('PATCH', $request?->method);
+        $this->assertSame('application/json', $request?->headers['Content-Type']);
+    }
+
+    #[Test]
+    public function it_sends_successful_delete_request(): void
+    {
+        $this->transport->queueResponse(new HttpResponse(204, ''));
+
+        $client = $this->createClient();
+        $response = $client->delete('https://api.example.com/users/1');
+
+        $this->assertSame(204, $response->statusCode);
+
+        $request = $this->transport->getRequest(0);
+        $this->assertSame('DELETE', $request?->method);
     }
 
     #[Test]
